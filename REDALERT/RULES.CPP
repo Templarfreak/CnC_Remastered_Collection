@@ -1009,7 +1009,7 @@ bool RulesClass::Objects(CCINIClass & ini)
 			continue;
 		}
 
-		char tmp[11];
+		char tmp[INI_STRINGMAX];
 		sprintf(tmp, "%ld", i);
 		entry = tmp;
 		if (ini.Is_Present(warheads, entry)) {
