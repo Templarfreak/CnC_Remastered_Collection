@@ -69,6 +69,9 @@
 //#define	BOGUSCD
 //#endif
 
+//my defines
+constexpr auto INI_STRINGMAX = 256;
+
 #define	FIXIT_SCORE_CRASH			// Fixes score screen crash
 #define	FIXIT_MULTI_SAVE			// Fixes multiplayer save/load
 #define	FIXIT_NO_COMP_ALLY		// Prevent ally with computer

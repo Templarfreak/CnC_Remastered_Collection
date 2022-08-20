@@ -3113,17 +3113,25 @@ bool CellClass::Grow_Tiberium(void)
  * HISTORY:                                                                                    *
  *   08/14/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-bool CellClass::Spread_Tiberium(bool forced)
-{
+bool CellClass::Spread_Tiberium(bool forced, bool gems) {
 	if (!forced) {
 		if (!Can_Tiberium_Spread()) return(false);
 	}
+
 	FacingType offset = Random_Pick(FACING_N, FACING_NW);
 	for (FacingType index = FACING_N; index < FACING_COUNT; index++) {
-		CellClass * newcell = Adjacent_Cell(index+offset);
+		CellClass * newcell = Adjacent_Cell(index + offset);
 
 		if (newcell != NULL && newcell->Can_Tiberium_Germinate()) {
-			new OverlayClass(Random_Pick(OVERLAY_GOLD1, OVERLAY_GOLD4), newcell->Cell_Number());
+			OverlayType start = OVERLAY_GOLD1;
+			OverlayType end = OVERLAY_GOLD4;
+
+			if (gems) {
+				start = OVERLAY_GEMS1;
+				end = OVERLAY_GEMS4;
+			}
+
+			new OverlayClass(Random_Pick(start, end), newcell->Cell_Number());
 			newcell->OverlayData = 0;
 			return(true);
 		}

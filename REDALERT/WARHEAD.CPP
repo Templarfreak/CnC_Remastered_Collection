@@ -121,6 +121,36 @@ void WarheadTypeClass::operator delete(void * pointer)
 	Warheads.Free((WarheadTypeClass *)pointer);
 }
 
+/***********************************************************************************************
+ * WarheadTypeClass::CopyWarheadTypeClass -- Copies all values of one Warhead type to another. *
+ *                                                                                             *
+ *                                                                                             *
+ * INPUT:   pointer to the WarheadTypeClass to copy from into this WarheadTypeClass.           *
+ *                                                                                             *
+ * OUTPUT:  none                                                                               *
+ *                                                                                             *
+ * WARNINGS:   none                                                                            *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   06/19/2020 Templarfreak : Created.                                                        *
+ *=============================================================================================*/
+void WarheadTypeClass::CopyWarheadTypeClass(WarheadTypeClass* whtype)
+{
+	ID = whtype->ID;
+	IniName = whtype->IniName;
+	SpreadFactor = whtype->SpreadFactor;
+	IsWallDestroyer = whtype->IsWallDestroyer;
+	IsWoodDestroyer = whtype->IsWoodDestroyer;
+	IsTiberiumDestroyer = whtype->IsTiberiumDestroyer;
+	IsOrganic = whtype->IsOrganic;
+
+	for (int i = 0; i < ARMOR_COUNT; i++) {
+		Modifier[i] = whtype->Modifier[i];
+	}
+
+	ExplosionSet = whtype->ExplosionSet;
+	InfantryDeath = whtype->InfantryDeath;
+}
 
 /***********************************************************************************************
  * WarheadTypeClass::As_Pointer -- Convert a warhead type number into a pointer.               *

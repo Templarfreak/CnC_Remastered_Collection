@@ -72,7 +72,7 @@ class CCINIClass : public INIClass
 		TriggerTypeClass * Get_TriggerType(char const * section, char const * entry) const;
 		VQType Get_VQType(char const * section, char const * entry, VQType defvalue) const;
 		VocType Get_VocType(char const * section, char const * entry, VocType defvalue) const;
-		WarheadType Get_WarheadType(char const * section, char const * entry, WarheadType defvalue) const;
+		int Get_WarheadType(char const * section, char const * entry, int defvalue) const;
 		WeaponType Get_WeaponType(char const * section, char const * entry, WeaponType defvalue) const;
 		long Get_Owners(char const * section, char const * entry, long defvalue) const;
 		CrateType Get_CrateType(char const * section, char const * entry, CrateType defvalue) const;

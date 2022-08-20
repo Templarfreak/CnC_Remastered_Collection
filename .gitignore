@@ -1,0 +1,13 @@
+
+*.ipch
+*.opendb
+*.db
+*.db-shm
+*.db-wal
+*.obj
+*.log
+*.res
+*.tlog
+.vs/
+bin/
+Win32/

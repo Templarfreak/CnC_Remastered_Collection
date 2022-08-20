@@ -287,7 +287,7 @@ class CellClass
 		**	Maintenance calculation support.
 		*/
 		bool Grow_Tiberium(void);
-		bool Spread_Tiberium(bool forced=false);
+		bool Spread_Tiberium(bool forced = false, bool gems = false);
 		long Tiberium_Adjust(bool pregame=false);
 		void Wall_Update(void);
 		void Concrete_Calc(void);

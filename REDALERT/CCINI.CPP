@@ -722,14 +722,16 @@ bool CCINIClass::Put_WeaponType(char const * section, char const * entry, Weapon
  * HISTORY:                                                                                    *
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-WarheadType CCINIClass::Get_WarheadType(char const * section, char const * entry, WarheadType defvalue) const
+int CCINIClass::Get_WarheadType(char const * section, char const * entry, int defvalue) const
 {
-	char buffer[128];
+	char buffer[INI_STRINGMAX];
 
 	if (Get_String(section, entry, "", buffer, sizeof(buffer))) {
-		for (WarheadType wh = WARHEAD_FIRST; wh < WARHEAD_COUNT; wh++) {
-			if (stricmp(WarheadTypeClass::As_Pointer(wh)->Name(), buffer) == 0) {
-				return(wh);
+		for (int i = 0; i < Warheads.Count(); i++) {
+			WarheadTypeClass * tmp = Warheads.Ptr(i);
+			const char * tmpchar = tmp->Name();
+			if (stricmp(tmpchar, buffer) == 0) {
+				return(i);
 			}
 		}
 	}

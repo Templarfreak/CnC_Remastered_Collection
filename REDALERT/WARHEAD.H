@@ -50,6 +50,8 @@ class WarheadTypeClass
 		static void * operator new(size_t , void * ptr) {return(ptr);};
 		void operator delete(void * pointer);
 
+		void CopyWarheadTypeClass(WarheadTypeClass * whtype);
+
 		void Code_Pointers(void) {}
 		void Decode_Pointers(void) {}
 		char const * Name(void) const {return(IniName);}

@@ -637,6 +637,8 @@ bool RulesClass::Heap_Maximums(CCINIClass & ini)
 	**	Any heaps that use the maximums that were just loaded, must
 	**	be initialized as necessary.
 	*/
+	//we don't define these in a hard-coded fashion anymore
+#ifdef OLD
 	Warheads.Set_Heap(WarheadMax);
 	new WarheadTypeClass("SA");
 	new WarheadTypeClass("HE");
@@ -648,6 +650,7 @@ bool RulesClass::Heap_Maximums(CCINIClass & ini)
 	new WarheadTypeClass("Nuke");
 #ifdef FIXIT_CSII	//	checked - ajw 9/28/98
 	new WarheadTypeClass("Mechanical");
+#endif
 #endif
 
 	Weapons.Set_Heap(WeaponMax);
@@ -976,8 +979,71 @@ bool RulesClass::Objects(CCINIClass & ini)
 	/*
 	**	Fetch the game object values from the rules file.
 	*/
-	for (int index = 0; index < Warheads.Count(); index++) {
-		Warheads.Ptr(index)->Read_INI(ini);
+	const char * warheads = "WarheadTypes";
+	const char * bullets = "BulletTypes";
+	const char * weapons = "WeaponTypes";
+	const char * units = "VehicleTypes";
+	const char * infantry = "InfantryTypes";
+	const char * entry;
+
+	int section_size = 0;
+	int warhead_size = 0;
+
+	int i = 0;
+	bool reached_end = false;
+
+	//Templarfreak: we need to make sure to backup all other existing Warheads. For instance, there could be existing warheads when we start
+	//reading AFTRMATH.INI at the bare minimum. There could be other INI files in the future. 
+	TFixedIHeapClass<WarheadTypeClass> CurrentWarheads;
+	CurrentWarheads.Set_Heap(Warheads.Count());
+
+	for (i = 0; i < Warheads.Count(); i++) {
+		CurrentWarheads.Alloc();
+		CurrentWarheads.Ptr(i)->CopyWarheadTypeClass(Warheads.Ptr(i));
+		WarheadTypeClass* w = CurrentWarheads.Ptr(i);
+	}
+
+	for (i = 0; i < section_size + 1; i++) {
+		if (reached_end) {
+			reached_end = false;
+			continue;
+		}
+
+		char tmp[11];
+		sprintf(tmp, "%ld", i);
+		entry = tmp;
+		if (ini.Is_Present(warheads, entry)) {
+			section_size++;
+		}
+		else {
+			warhead_size = section_size;
+			reached_end = true;
+		}
+	}
+
+	//now we need to copy those previously initialized Warheads BACK over
+	warhead_size += Warheads.Count();
+	Warheads.Set_Heap(warhead_size);
+
+	for (i = 0; i < CurrentWarheads.Count(); i++) {
+		Warheads.Alloc();
+		Warheads.Ptr(i)->CopyWarheadTypeClass(CurrentWarheads.Ptr(i));
+	}
+
+	//NOW we can initialize NEW Warheads
+	for (int index = 0; index < warhead_size; index++) {
+		char tmp[11];
+		sprintf(tmp, "%ld", index);
+		entry = tmp;
+		char* out = new char[INI_STRINGMAX];
+		ini.Get_String(warheads, entry, "NIL", out, INI_STRINGMAX);
+
+		if (*out == *"NIL") {
+			continue;
+		}
+
+		WarheadTypeClass * w = new WarheadTypeClass(out);
+		w->Read_INI(ini);
 	}
 
 	for (int proj = 0; proj < BulletTypes.Count(); proj++) {
